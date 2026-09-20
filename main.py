@@ -9,14 +9,19 @@ print("Status code:", response.status_code)
 
 soup = BeautifulSoup(response.text, "html.parser")
 
-print("\n17 Pro Max პროდუქტები:")
+# ვეძებთ გვერდზე სიტყვას "Refurbrished"
+products = soup.find_all(string=lambda text: text and "Refurbrished" in text)
+
+print("\nRefurbrished პროდუქტების რაოდენობა:", len(products))
 print("-------------------------")
 
-for link in soup.find_all("a"):
+for product in products:
+    print("ნაპოვნია:", repr(product.strip()))
 
-    name = link.get_text(" ", strip=True)
+    parent = product.parent
 
-    if "17 Pro Max" in name:
-        print("პროდუქტი:", repr(name))
-        print("ლინკი:", link.get("href"))
-        print("-------------------------")
+    print("Parent tag:", parent.name)
+    print("Parent class:", parent.get("class"))
+    print("Parent id:", parent.get("id"))
+
+    print("-------------------------")
