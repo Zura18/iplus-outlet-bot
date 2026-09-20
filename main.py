@@ -3,6 +3,42 @@ from bs4 import BeautifulSoup
 
 base_url = "https://iplus.com.ge/ka/outlet/"
 
+phone_brands = [
+    "iPhone",
+    "Samsung",
+    "Google Pixel",
+    "Xiaomi",
+    "OnePlus",
+    "Motorola"
+]
+
+laptop_brands = [
+    "MacBook",
+    "ASUS",
+    "Lenovo",
+    "HP",
+    "Dell",
+    "Acer",
+    "MSI"
+]
+
+brands = phone_brands + laptop_brands
+
+storage = [
+    "64GB",
+    "128GB",
+    "256GB",
+    "512GB",
+    "1TB",
+    "64 GB",
+    "128 GB",
+    "256 GB",
+    "512 GB"
+]
+
+print("ჩვენთვის საინტერესო პროდუქტები")
+print("========================================")
+
 for page in range(1, 4):
 
     if page == 1:
@@ -12,24 +48,32 @@ for page in range(1, 4):
 
     response = requests.get(url)
 
-    print("\n========================================")
-    print(f"გვერდი {page}")
-    print(f"URL: {url}")
-    print(f"Status code: {response.status_code}")
-    print("========================================")
+    print(f"\nგვერდი {page} | Status code: {response.status_code}")
+    print("----------------------------------------")
 
     soup = BeautifulSoup(response.text, "html.parser")
 
     products = soup.select("a.product-title")
-
-    print(f"პროდუქტების რაოდენობა: {len(products)}")
-    print("----------------------------------------")
 
     for product in products:
 
         name = product.get_text(" ", strip=True)
         link = product.get("href")
 
-        print("პროდუქტი:", name)
-        print("ლინკი:", link)
-        print("----------------------------------------")
+        has_brand = any(
+            brand.lower() in name.lower()
+            for brand in brands
+        )
+
+        has_storage = any(
+            size.lower() in name.lower()
+            for size in storage
+        )
+
+        has_refurbished = "refurb" in name.lower()
+
+        if has_brand and has_storage and has_refurbished:
+
+            print("პროდუქტი:", name)
+            print("ლინკი:", link)
+            print("----------------------------------------")
