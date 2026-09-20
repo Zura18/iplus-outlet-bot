@@ -1,47 +1,45 @@
 name: iPlus Outlet Bot
 
 on:
-workflow_dispatch:
-schedule:
-- cron: '2,7,12,17,22,27,32,37,42,47,52,57 * * * *'
+  workflow_dispatch:
+  schedule:
+    - cron: '2,7,12,17,22,27,32,37,42,47,52,57 * * * *'
 
 permissions:
-contents: write
+  contents: write
 
 jobs:
-run-bot:
-runs-on: ubuntu-latest
+  run-bot:
+    runs-on: ubuntu-latest
 
-```
-steps:
-  - name: Get repository
-    uses: actions/checkout@v4
+    steps:
+      - name: Get repository
+        uses: actions/checkout@v4
 
-  - name: Set up Python
-    uses: actions/setup-python@v5
-    with:
-      python-version: '3.12'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
-  - name: Install dependencies
-    run: pip install -r requirements.txt
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
-  - name: Run bot
-    env:
-      BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-      CHAT_ID: ${{ secrets.CHAT_ID }}
-    run: python main.py
+      - name: Run bot
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: python main.py
 
-  - name: Save products
-    run: |
-      git config user.name "github-actions[bot]"
-      git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Save products
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      git add products.json
+          git add products.json
 
-      if git diff --cached --quiet; then
-        echo "No changes to products.json"
-      else
-        git commit -m "Update products.json"
-        git push
-      fi
-```
+          if git diff --cached --quiet; then
+            echo "No changes to products.json"
+          else
+            git commit -m "Update products.json"
+            git push
+          fi
