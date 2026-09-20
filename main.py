@@ -6,6 +6,9 @@ import os
 base_url = "https://iplus.com.ge/ka/outlet/"
 products_file = "products.json"
 
+BOT_TOKEN = os.environ.get("BOT_TOKEN")
+CHAT_ID = os.environ.get("CHAT_ID")
+
 phone_brands = [
     "iPhone",
     "Samsung",
@@ -75,7 +78,6 @@ for page in range(1, 4):
         name = product.get_text(" ", strip=True)
         link = product.get("href")
 
-        # თუ link სრული URL არ არის
         if link.startswith("/"):
             link = "https://iplus.com.ge" + link
 
@@ -108,22 +110,42 @@ for link, product in current_products.items():
         new_products.append(product)
 
 
-# შედეგის ჩვენება
 print("\n----------------------------------------")
 print(f"ნაპოვნია შესაბამისი პროდუქტები: {len(current_products)}")
 print(f"ახალი პროდუქტები: {len(new_products)}")
 print("----------------------------------------")
 
 
+# Telegram შეტყობინება
 if new_products:
-
-    print("\n🆕 ახალი პროდუქტები:")
 
     for product in new_products:
 
-        print("პროდუქტი:", product["name"])
-        print("ლინკი:", product["link"])
-        print("----------------------------------------")
+        message = (
+            "🆕 ახალი ელემენტი დაემატა!\n\n"
+            f"📱 {product['name']}\n\n"
+            f"🔗 {product['link']}"
+        )
+
+        telegram_url = (
+            f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+        )
+
+        telegram_data = {
+            "chat_id": CHAT_ID,
+            "text": message
+        }
+
+        telegram_response = requests.post(
+            telegram_url,
+            data=telegram_data
+        )
+
+        if telegram_response.ok:
+            print("Telegram შეტყობინება გაიგზავნა ✅")
+        else:
+            print("Telegram შეცდომა ❌")
+            print(telegram_response.text)
 
 else:
 
