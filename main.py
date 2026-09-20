@@ -1,7 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
+import json
+import os
 
 base_url = "https://iplus.com.ge/ka/outlet/"
+products_file = "products.json"
 
 phone_brands = [
     "iPhone",
@@ -36,8 +39,21 @@ storage = [
     "512 GB"
 ]
 
-print("ჩვენთვის საინტერესო პროდუქტები")
+
+# უკვე ნანახი პროდუქტების წაკითხვა
+if os.path.exists(products_file):
+    with open(products_file, "r", encoding="utf-8") as file:
+        old_products = json.load(file)
+else:
+    old_products = {}
+
+
+current_products = {}
+
+
+print("iPlus Outlet - შემოწმება")
 print("========================================")
+
 
 for page in range(1, 4):
 
@@ -49,7 +65,6 @@ for page in range(1, 4):
     response = requests.get(url)
 
     print(f"\nგვერდი {page} | Status code: {response.status_code}")
-    print("----------------------------------------")
 
     soup = BeautifulSoup(response.text, "html.parser")
 
@@ -59,6 +74,10 @@ for page in range(1, 4):
 
         name = product.get_text(" ", strip=True)
         link = product.get("href")
+
+        # თუ link სრული URL არ არის
+        if link.startswith("/"):
+            link = "https://iplus.com.ge" + link
 
         has_brand = any(
             brand.lower() in name.lower()
@@ -74,6 +93,45 @@ for page in range(1, 4):
 
         if has_brand and has_storage and has_refurbished:
 
-            print("პროდუქტი:", name)
-            print("ლინკი:", link)
-            print("----------------------------------------")
+            current_products[link] = {
+                "name": name,
+                "link": link
+            }
+
+
+# ახალი პროდუქტების მოძებნა
+new_products = []
+
+for link, product in current_products.items():
+
+    if link not in old_products:
+        new_products.append(product)
+
+
+# შედეგის ჩვენება
+print("\n----------------------------------------")
+print(f"ნაპოვნია შესაბამისი პროდუქტები: {len(current_products)}")
+print(f"ახალი პროდუქტები: {len(new_products)}")
+print("----------------------------------------")
+
+
+if new_products:
+
+    print("\n🆕 ახალი პროდუქტები:")
+
+    for product in new_products:
+
+        print("პროდუქტი:", product["name"])
+        print("ლინკი:", product["link"])
+        print("----------------------------------------")
+
+else:
+
+    print("\nახალი პროდუქტები არ არის.")
+
+
+# მიმდინარე პროდუქტების შენახვა
+with open(products_file, "w", encoding="utf-8") as file:
+    json.dump(current_products, file, ensure_ascii=False, indent=4)
+
+print("\nშემოწმება დასრულდა.")
