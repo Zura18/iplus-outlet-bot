@@ -9,6 +9,8 @@ products_file = "products.json"
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 CHAT_ID = os.environ.get("CHAT_ID")
 
+HEADERS = {"User-Agent": "Mozilla/5.0"}
+
 phone_brands = [
     "iPhone",
     "Samsung",
@@ -45,13 +47,17 @@ storage = [
 
 # უკვე ნანახი პროდუქტების წაკითხვა
 if os.path.exists(products_file):
-    with open(products_file, "r", encoding="utf-8") as file:
-        old_products = json.load(file)
+    try:
+        with open(products_file, "r", encoding="utf-8") as file:
+            old_products = json.load(file)
+    except json.JSONDecodeError:
+        old_products = {}
 else:
     old_products = {}
 
 
 current_products = {}
+had_error = False
 
 
 print("iPlus Outlet - შემოწმება")
@@ -65,7 +71,13 @@ for page in range(1, 4):
     else:
         url = f"{base_url}?page={page}"
 
-    response = requests.get(url)
+    try:
+        response = requests.get(url, timeout=20, headers=HEADERS)
+        response.raise_for_status()
+    except requests.RequestException as e:
+        print(f"\nგვერდი {page} | შეცდომა: {e}")
+        had_error = True
+        continue
 
     print(f"\nგვერდი {page} | Status code: {response.status_code}")
 
@@ -77,6 +89,9 @@ for page in range(1, 4):
 
         name = product.get_text(" ", strip=True)
         link = product.get("href")
+
+        if not link:
+            continue
 
         if link.startswith("/"):
             link = "https://iplus.com.ge" + link
@@ -99,6 +114,13 @@ for page in range(1, 4):
                 "name": name,
                 "link": link
             }
+
+
+# დაცვა: თუ არაფერი მოიძებნა ან რომელიმე გვერდი ჩავარდა,
+# ძველ ფაილს არ ვშლით (თორემ შემდეგზე ყველაფერი "ახალი" გამოჩნდება)
+if not current_products:
+    print("პროდუქტები ვერ მოიძებნა, ფაილს არ ვცვლი.")
+    raise SystemExit(0)
 
 
 # ახალი პროდუქტების მოძებნა
@@ -136,20 +158,34 @@ if new_products:
             "text": message
         }
 
-        telegram_response = requests.post(
-            telegram_url,
-            data=telegram_data
-        )
+        try:
+            telegram_response = requests.post(
+                telegram_url,
+                data=telegram_data,
+                timeout=20
+            )
+            sent = telegram_response.ok
+            if not sent:
+                print(telegram_response.text)
+        except requests.RequestException as e:
+            print(e)
+            sent = False
 
-        if telegram_response.ok:
+        if sent:
             print("Telegram შეტყობინება გაიგზავნა ✅")
         else:
-            print("Telegram შეცდომა ❌")
-            print(telegram_response.text)
+            print("Telegram შეცდომა ❌ (შემდეგ გაშვებაზე ისევ ცდის)")
+            # არ ვინახავთ, რომ შემდეგ ჯერზე ისევ სცადოს
+            current_products.pop(product["link"], None)
 
 else:
 
     print("\nახალი პროდუქტები არ არის.")
+
+
+# თუ რომელიმე გვერდი ჩავარდა, ძველი ჩანაწერები შევინარჩუნოთ
+if had_error:
+    current_products = {**old_products, **current_products}
 
 
 # მიმდინარე პროდუქტების შენახვა
