@@ -32,6 +32,14 @@ laptop_brands = [
 
 brands = phone_brands + laptop_brands
 
+storage = [
+    "64GB",
+    "128GB",
+    "256GB",
+    "512GB",
+    "1TB"
+]
+
 print("\nტელეფონები და ლეპტოპები:")
 print("-------------------------")
 
@@ -45,9 +53,14 @@ for product in products:
         for brand in brands
     )
 
+    has_storage = any(
+        size.lower() in name.lower()
+        for size in storage
+    )
+
     has_refurbished = "refurb" in name.lower()
 
-    if has_brand and has_refurbished:
+    if has_brand and has_storage and has_refurbished:
         print("პროდუქტი:", name)
         print("ლინკი:", link)
         print("-------------------------")
