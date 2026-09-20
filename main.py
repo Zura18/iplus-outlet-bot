@@ -11,15 +11,43 @@ soup = BeautifulSoup(response.text, "html.parser")
 
 products = soup.select("a.product-title")
 
-print("\nOutlet პროდუქტები:")
+phone_brands = [
+    "iPhone",
+    "Samsung",
+    "Google Pixel",
+    "Xiaomi",
+    "OnePlus",
+    "Motorola"
+]
+
+laptop_brands = [
+    "MacBook",
+    "ASUS",
+    "Lenovo",
+    "HP",
+    "Dell",
+    "Acer",
+    "MSI"
+]
+
+brands = phone_brands + laptop_brands
+
+print("\nტელეფონები და ლეპტოპები:")
 print("-------------------------")
 
 for product in products:
+
     name = product.get_text(" ", strip=True)
     link = product.get("href")
 
-    print("პროდუქტი:", name)
-    print("ლინკი:", link)
-    print("-------------------------")
+    has_brand = any(
+        brand.lower() in name.lower()
+        for brand in brands
+    )
 
-print("სულ პროდუქტები:", len(products))
+    has_refurbished = "refurb" in name.lower()
+
+    if has_brand and has_refurbished:
+        print("პროდუქტი:", name)
+        print("ლინკი:", link)
+        print("-------------------------")
