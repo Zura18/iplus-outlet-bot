@@ -1,7 +1,11 @@
+```yaml
 name: iPlus Outlet Bot
 
 on:
   workflow_dispatch:
+
+  schedule:
+    - cron: "*/5 * * * *"
 
 permissions:
   contents: write
@@ -41,3 +45,4 @@ jobs:
             git commit -m "Update products.json"
             git push
           fi
+```
