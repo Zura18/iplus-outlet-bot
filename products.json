@@ -15,10 +15,6 @@
         "name": "iPhone 17 Pro Max 256GB Silver ( Refurbrished)",
         "link": "https://iplus.com.ge/ka/iphone-17-pro-max-256gb-silver-refurbrished-ka/"
     },
-    "https://iplus.com.ge/ka/iphone-17-pro-max-256gb-silver-refurbrished-ka-3/": {
-        "name": "iPhone 17 Pro Max 256GB Silver(Refurbrished)",
-        "link": "https://iplus.com.ge/ka/iphone-17-pro-max-256gb-silver-refurbrished-ka-3/"
-    },
     "https://iplus.com.ge/ka/iphone-17-pro-max-256gb-deep-blue-esim-refurbrished/": {
         "name": "iPhone 17 Pro Max 256GB Deep Blue ESIM(Refurbrished)",
         "link": "https://iplus.com.ge/ka/iphone-17-pro-max-256gb-deep-blue-esim-refurbrished/"
@@ -31,12 +27,16 @@
         "name": "iPhone 16 Pro 256GB Desert Titanium(Refurbrished)",
         "link": "https://iplus.com.ge/ka/iphone-16-pro-256gb-desert-titanium-refurbrished-ka/"
     },
-    "https://iplus.com.ge/ka/iphone-17-pro-max-512gb-orange-refurbrished/": {
-        "name": "iPhone 17 Pro Max 512GB Orange (Refurbrished)",
-        "link": "https://iplus.com.ge/ka/iphone-17-pro-max-512gb-orange-refurbrished/"
-    },
     "https://iplus.com.ge/ka/iphone-17-pro-max-512gb-silver-dual-sim-refurbrished/": {
         "name": "iPhone 17 Pro Max 512GB Silver Dual sim (Refurbrished)",
         "link": "https://iplus.com.ge/ka/iphone-17-pro-max-512gb-silver-dual-sim-refurbrished/"
+    },
+    "https://iplus.com.ge/ka/iphone-14-128gb-midnight-refurbrished/": {
+        "name": "iPhone 14 128GB Midnight (Refurbrished)",
+        "link": "https://iplus.com.ge/ka/iphone-14-128gb-midnight-refurbrished/"
+    },
+    "https://iplus.com.ge/ka/iphone-12-pro-128gb-gold-refurbrished-ka/": {
+        "name": "iPhone 12 Pro 128GB Gold(Refurbrished)",
+        "link": "https://iplus.com.ge/ka/iphone-12-pro-128gb-gold-refurbrished-ka/"
     }
 }
