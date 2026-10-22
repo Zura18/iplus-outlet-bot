@@ -23,10 +23,6 @@
         "name": "iPhone 17 Pro Max 256GB Cosmic Orange( Refurbrished)",
         "link": "https://iplus.com.ge/ka/iphone-17-pro-max-256gb-cosmic-orange-refurbrished/"
     },
-    "https://iplus.com.ge/ka/iphone-16-pro-256gb-desert-titanium-refurbrished-ka/": {
-        "name": "iPhone 16 Pro 256GB Desert Titanium(Refurbrished)",
-        "link": "https://iplus.com.ge/ka/iphone-16-pro-256gb-desert-titanium-refurbrished-ka/"
-    },
     "https://iplus.com.ge/ka/iphone-17-pro-max-512gb-orange-refurbrished/": {
         "name": "iPhone 17 Pro Max 512GB Orange (Refurbrished)",
         "link": "https://iplus.com.ge/ka/iphone-17-pro-max-512gb-orange-refurbrished/"
@@ -38,5 +34,9 @@
     "https://iplus.com.ge/ka/iphone-17-pro-max-256gb-deep-blue-esim-refurbrished-ka-3/": {
         "name": "iPhone 17 Pro Max 256GB Deep Blue ESIM(Refurbrished)",
         "link": "https://iplus.com.ge/ka/iphone-17-pro-max-256gb-deep-blue-esim-refurbrished-ka-3/"
+    },
+    "https://iplus.com.ge/ka/iphone-17-pro-max-1tb-cosmic-orange-refurbrished/": {
+        "name": "iPhone 17 Pro Max 1TB Cosmic Orange(Refurbrished)",
+        "link": "https://iplus.com.ge/ka/iphone-17-pro-max-1tb-cosmic-orange-refurbrished/"
     }
 }
